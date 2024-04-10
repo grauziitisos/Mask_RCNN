@@ -27,13 +27,13 @@ ROOT_DIR = os.path.abspath("../")
 sys.path.append(ROOT_DIR)  # To find local version of the library
 from mrcnn import utils
 
-
+from datetime import datetime
 ############################################################
 #  Visualization
 ############################################################
 
 def display_images(images, titles=None, cols=4, cmap=None, norm=None,
-                   interpolation=None):
+                   interpolation=None, saveims=False):
     """Display the given set of images, optionally with titles.
     images: list or array of image tensors in HWC format.
     titles: optional. A list of titles to display with each image.
@@ -53,6 +53,8 @@ def display_images(images, titles=None, cols=4, cmap=None, norm=None,
         plt.imshow(image.astype(np.uint8), cmap=cmap,
                    norm=norm, interpolation=interpolation)
         i += 1
+    if(saveims):
+        plt.savefig(datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".jpg")
     plt.show()
 
 
@@ -84,7 +86,8 @@ def display_instances(image, boxes, masks, class_ids, class_names,
                       scores=None, title="",
                       figsize=(16, 16), ax=None,
                       show_mask=True, show_bbox=True,
-                      colors=None, captions=None):
+                      colors=None, captions=None,
+                      saveims=False):
     """
     boxes: [num_instance, (y1, x1, y2, x2, class_id)] in image coordinates.
     masks: [height, width, num_instances]
@@ -163,6 +166,8 @@ def display_instances(image, boxes, masks, class_ids, class_names,
             p = Polygon(verts, facecolor="none", edgecolor=color)
             ax.add_patch(p)
     ax.imshow(masked_image.astype(np.uint8))
+    if(saveims):
+        plt.savefig(datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + ".jpg")
     if auto_show:
         plt.show()
 
